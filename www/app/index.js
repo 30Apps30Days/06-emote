@@ -1,42 +1,4 @@
-var icons = [
-  {icon: ':-)', name: 'smile', char: 'latin', side: true, nose: true},
-  {icon: ':)',  name: 'smile', char: 'latin', side: true, nose: false},
-  {icon: ':-]', name: 'smile', char: 'latin', side: true, nose: true},
-  {icon: ':]',  name: 'smile', char: 'latin', side: true, nose: false},
-  {icon: ':-3', name: 'smile', char: 'latin', side: true, nose: true},
-  {icon: ':3',  name: 'smile', char: 'latin', side: true, nose: false},
-  {icon: ':->', name: 'smile', char: 'latin', side: true, nose: true},
-  {icon: ':>',  name: 'smile', char: 'latin', side: true, nose: false},
-  {icon: '=]',  name: 'smile', char: 'latin', side: true, nose: false},
-  {icon: '=)',  name: 'smile', char: 'latin', side: true, nose: false},
 
-  {icon: ':-(', name: 'frown', char: 'latin', side: true, nose: true},
-  {icon: ':(',  name: 'frown', char: 'latin', side: true, nose: false},
-  {icon: ':-[', name: 'frown', char: 'latin', side: true, nose: true},
-  {icon: ':[',  name: 'frown', char: 'latin', side: true, nose: false},
-  {icon: ':-<', name: 'frown', char: 'latin', side: true, nose: true},
-  {icon: ':<',  name: 'frown', char: 'latin', side: true, nose: false},
-  {icon: '=[',  name: 'frown', char: 'latin', side: true, nose: false},
-  {icon: '=(',  name: 'frown', char: 'latin', side: true, nose: false},
-
-  {icon: ':p',  name: 'tounge', char: 'latin', side: true, nose: false},
-  {icon: ':P',  name: 'tounge', char: 'latin', side: true, nose: false},
-  {icon: '=P',  name: 'tounge', char: 'latin', side: true, nose: false},
-  {icon: ':-p', name: 'tounge', char: 'latin', side: true, nose: true},
-  {icon: ':-P', name: 'tounge', char: 'latin', side: true, nose: true},
-
-  {icon: ':D',  name: 'grin', char: 'latin', side: true, nose: false},
-  {icon: '=D',  name: 'grin', char: 'latin', side: true, nose: false},
-  {icon: ':-D', name: 'grin', char: 'latin', side: true, nose: true},
-
-  {icon: ':o',  name: 'gasp', char: 'latin', side: true,  nose: false},
-  {icon: ':O',  name: 'gasp', char: 'latin', side: true,  nose: false},
-  {icon: ':-o', name: 'gasp', char: 'latin', side: true,  nose: true},
-  {icon: ':-O', name: 'gasp', char: 'latin', side: true,  nose: true},
-
-  {icon: ';)',  name: 'wink', char: 'latin', side: true,  nose: false},
-  {icon: ';-)', name: 'wink', char: 'latin', side: true,  nose: true},
-];
 
 function noop() {}
 
@@ -79,129 +41,27 @@ function f(name, params) {
   return name + '(' + params.join(', ') + ')';
 }
 
-var emoticons = [{
-  desc: 'smiley or happy face',
-  icon: [
-    ':‑)',
-    ':)',
-    ':-]',
-    ':]',
-    ':-3',
-    ':3',
-    ':->',
-    ':>',
-    '8-)',
-    '8)',
-    ':-}',
-    ':}',
-    ':o)',
-    ':c)',
-    ':^)',
-    '=]',
-    '=)',
-    '☺',
-    '️',
-    '🙂',
-    '😊',
-    '😀',
-    '😁'
-  ]
-}, {
-  desc: 'laughing, big grin, laugh with glasses',
-  icon: [
-    ':‑D',
-    ':D',
-    '8‑D',
-    '8D',
-    'x‑D',
-    'xD',
-    'X‑D',
-    'XD',
-    '=D',
-    '=3',
-    'B^D',
-    '😃',
-    '😄',
-    '😆',
-    '😍'
-  ]
-}, {
-  desc: 'very happy or double chin',
-  icon: [':-))']
-}, {
-  desc: 'frown, sad, angry, pouting',
-  icon: [
-    ':‑(',
-    ':(',
-    ':‑c',
-    ':c',
-    ':‑<',
-    ':<',
-    ':‑[',
-    ':[',
-    ':-||',
-    '>:[',
-    ':{',
-    ':@',
-    '>:(',
-    '☹',
-    '️',
-    '🙁',
-    '😠',
-    '😡',
-    '😞',
-    '😟',
-    '😣',
-    '😖'
-  ]
-}, {
-  desc: 'crying',
-  icon: [
-    ":'‑(",
-    ":'(",
-    "😢",
-    "😭"
-  ]
-}, {
-  desc: 'tears of happiness, joy',
-  icon: [
-    ":'‑)",
-    ":')",
-    "😂"
-  ]
-}, {
-  desc: 'horror, disgust, sadness, great dismay',
-  icon: [
-  "D‑':",
-  "D:<",
-  "D:",
-  "D8",
-  "D;",
-  "D=",
-  "DX",
-  "😨",
-  "😧",
-  "😦",
-  "😱",
-  "😫",
-  "😩"
-  ]
-}];
 
+var IS_CORDOVA = !!window.cordova;
 
 var app = {
   // options
-  prefs: null,
+  DATA_KEY: 'com.metaist.emote.data',
+  store: null,
   options: {
-    'orient-sideways': true,
-    'orient-upright': true,
-    'chars-latin': true,
-    'chars-emoji': true,
-    'nose-absent': true,
-    'nose-present': true
+    sideways: true,
+    upright: true,
+    debug: true
   },
 
-  data: null,
+  // internal
+  idx: 0,
+  icons: [], // filtered version
+
+  // DOM
+  $chk_sideways: null,
+  $chk_upright: null,
+
   $icon: null,
   $desc: null,
   $snackbar: null,
@@ -211,8 +71,13 @@ var app = {
       'document': {'deviceready': this.ready},
       'form input': {'change': this.change},
       '#btn-copy': { 'click': this.copy },
-      '#btn-new': { 'click': this.renew }
+      '#btn-new': { 'click': this.next }
     });
+
+    if(!IS_CORDOVA) {
+      this.options.debug && console.log('NOT cordova');
+      bindEvents(this, {'window': {'load': this.ready}});
+    }
     return this;
   },
 
@@ -221,44 +86,63 @@ var app = {
     this.$icon = document.querySelector('#result .icon');
     this.$desc = document.querySelector('#result .desc');
     this.$snackbar = document.querySelector('#toast');
+    this.$chk_sideways = document.querySelector('#orient-sideways');
+    this.$chk_upright = document.querySelector('#orient-upright');
 
     // Grab preferences
-    // this.prefs = plugins.appPreferences;
-    this.renew();
-    return this.render();
-  },
-
-  copy: function () {
-    cordova.plugins.clipboard.copy(this.password);
-    this.$snackbar.MaterialSnackbar.showSnackbar({message: 'Copied!'});
-    return this;
-  },
-
-  renew: function () {
-    icons = _.shuffle(icons);
-
-    this.data = _.find(icons, function (icon) {
-      var result = true;
-      var orient = icon.side ? 'sideways' : 'upright';
-      var nose = icon.nose ? 'present' : 'absent';
-
-      result = result && this.options['chars-' + icon.char];
-      result = result && this.options['orient-' + orient];
-      result = result && this.options['nose-' + nose];
-      return result;
+    this.store = plugins.appPreferences;
+    this.store.fetch(this.DATA_KEY).then(function (data) {
+      this.options = data || this.options;
+      if(!this.options.sideways) {
+        this.$chk_sideways.parentElement.MaterialCheckbox.uncheck();
+      }
+      if(!this.options.upright) {
+        this.$chk_upright.parentElement.MaterialCheckbox.uncheck();
+      }
     }.bind(this));
-
-    return this.render();
+    return this.reset().next();
   },
 
   change: function () {
+    this.options.sideways = this.$chk_sideways.checked;
+    this.options.upright = this.$chk_upright.checked;
+    this.store.store(noop, noop, this.DATA_KEY, this.options);
+    return this.reset()
+               .next();
+  },
+
+  reset: function () {
+    this.options.debug && console.log('.reset()');
+    this.idx = 0;
+    this.icons = _.shuffle(_.filter(ALL_ICONS, function (icon) {
+      return (icon.side && this.options.sideways) ||
+             (!icon.side && this.options.upright);
+    }.bind(this)));
+    if(!this.icons.length) {
+      this.icons = [{name: 'Unknown', icon: '?', side: false}];
+    }
+    return this;
+  },
+
+  next: function () {
+    this.options.debug && console.log('.next()');
+    this.idx++;
+    if (this.idx >= this.icons.length) { this.reset(); }
     return this.render();
   },
 
   render: function () {
-    if(!this.data) {return this; }
-    this.$icon.innerText = this.data.icon;
-    this.$desc.innerText = this.data.name;
+    this.$icon.innerText = this.icons[this.idx].icon;
+    this.$desc.innerText = this.icons[this.idx].name;
+    return this;
+  },
+
+  copy: function () {
+    var data = this.icons[this.idx].icon;
+    if(IS_CORDOVA) {
+      cordova.plugins.clipboard.copy(data);
+    }
+    this.$snackbar.MaterialSnackbar.showSnackbar({message: 'Copied!'});
     return this;
   }
 };

@@ -21,11 +21,9 @@
     <link rel="stylesheet" href="app/index.css" />
   </head>
   <body>
-    <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-      mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
+    <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+      <!-- <header class="mdl-layout__header">
         <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">Emote</span>
           <div class="mdl-layout-spacer"></div>
           <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
             mdl-textfield--floating-label mdl-textfield--align-right">
@@ -39,9 +37,10 @@
             </div>
           </div>
         </div>
-      </header>
+      </header> -->
 
       <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Emote</span>
         <form id="options" action="#">
           <strong>Orientation</strong>
           <label for="orient-sideways"
@@ -56,7 +55,7 @@
               class="mdl-checkbox__input" checked />
             <span class="mdl-checkbox__label">Upright</span>
           </label>
-
+          <!--
           <br /><strong>Charachters</strong>
           <label for="chars-latin"
             class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
@@ -69,7 +68,7 @@
             <input id="chars-emoji" type="checkbox"
               class="mdl-checkbox__input" checked />
             <span class="mdl-checkbox__label">Emoji</span>
-          </label>
+          </label> -->
           <!-- <label for="chars-other"
             class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
             <input id="chars-other" type="checkbox"
@@ -112,7 +111,7 @@
       <main class="mdl-layout__content page-content">
         <div id="result">
           <div class="icon">:-)</div>
-          <div class="desc">Smiley or happy face.</div>
+          <div class="desc">smile</div>
 
           <div class="buttons">
             <button id="btn-copy"
@@ -139,6 +138,7 @@
 
     <script src="lib/lodash/dist/lodash.min.js"></script>
     <script src="cordova.js"></script>
+    <script src="app/icons.js"></script>
     <script src="app/index.js"></script>
   </body>
 </html>

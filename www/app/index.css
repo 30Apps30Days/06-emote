@@ -50,7 +50,6 @@ footer a {
 
 #options {
   margin: 0 auto;
-  margin-top: 2em;
   width: 80%;
 }
 
@@ -74,8 +73,9 @@ footer a {
 
 #result .icon {
   line-height: 1.5em;
-  font-family: "Courier New", "Courier", monospace;
-  font-size: 25vmin;
+  font-family: "Droid Sans Mono", "Courier New", "Courier", monospace;
+  font-size: 20vmin;
+  white-space: nowrap;
 }
 
 #result .desc {
